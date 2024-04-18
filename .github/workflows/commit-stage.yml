@@ -10,11 +10,11 @@ jobs:
       security-events: write
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4 Checkout repo
+        uses: actions/checkout@v4
       - name: Set up JDK
-        uses: actions/setup-java@v4 Installs/conf JRE
+        uses: actions/setup-java@v4
         with:
-          distribution: temurin Java distro
+          distribution: temurin
           java-version: 17
           cache: gradle
       - name: Build, unit tests and integration tests
