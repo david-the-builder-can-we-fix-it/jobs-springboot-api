@@ -1,23 +1,26 @@
 package com.careersforyou.jobservice.domain;
 
+import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Set;
+
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.assertj.core.api.AssertionsForClassTypes;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
-
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class JobValidationTests {
     private static Validator validator;
-    @BeforeAll // Let’s setup the tests
+    @BeforeAll
     static void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory(); validator = factory.getValidator();
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
     }
     @Test
         // Run a test
@@ -27,14 +30,17 @@ public class JobValidationTests {
         Set<ConstraintViolation<Job>> violations = validator.validate(job);
         assertThat(violations).isEmpty();
     }
+
     @Test // Run a test
     void whenIsbnDefinedButIncorrectThenValidationFails() {
-        var job =
-                new Job("a234567890", "Title", "Author", "no", "owj", "on");
+        var job = new Job("a234567890", "Title", "Author", "no", "owj", "on");
         Set<ConstraintViolation<Job>> violations = validator.validate(job);
         assertThat(violations).hasSize(1);
-        AssertionsForClassTypes.assertThat(violations.iterator().next().getMessage())
-                .isEqualTo("The ISBN format must be valid.");
+        assertThat(violations.iterator().next().getMessage())
+                .isEqualTo("The job ID must be greater than zero.");
     }
+
+
+
 }
 
